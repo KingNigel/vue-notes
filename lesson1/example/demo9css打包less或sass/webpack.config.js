@@ -7,6 +7,9 @@ module.exports={
      loaders:[{
        test:/\.css$/,
        loader:'style-loader!css-loader!autoprefixer-loader'
+     },{
+       test:/\.less$/,
+       loader:'style-loader!css-loader!autoprefixer-loader!less-loader'
      }]
 
    }

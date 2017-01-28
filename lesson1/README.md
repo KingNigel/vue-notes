@@ -70,3 +70,12 @@ loader 使用什么加载器 后面的loader先被加载
 https://my.oschina.net/dawd/blog/788155
 
 ###webpack打包css自动添加浏览器内核前缀
+
+1. 使用autoprefixer-loader
+2. {test:/\.css$/,loader:'style-loader!autoprefixer-loader'}
+
+###webpack打包less文件
+1. 需要的包 less less-loader
+
+###web打包sass文件
+1. 需要的包 node-sass sass-loader
