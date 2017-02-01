@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    {{ msg }}
+  </div>
+   <div id="app2">
+    <span>{{msg+'囧'+name}}</span>
+    <span>{{num*2}}</span>
+    <span>{{isOk?'success':'error'}}</span>
+  </div>
+  <script>
+      var vueApp = new Vue({
+        el: '#app',
+        data: {
+          msg: 'Hello Vue!'
+        }
+      });
+       var vueApp2 = new Vue({
+        el: '#app2',
+        data: {
+          msg: 'Hello',
+          name:'zyc',
+          num:16,
+          isOk:true
+        }
+      });
+   </script>
+</body>
+
+</html>
