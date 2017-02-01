@@ -7,14 +7,26 @@
   <script src="./vue.js"></script>
 </head>
 <body>
-  <div id="app">
-    <div v-bind:id="MenuContaineId">
+  <div id="app1">
+    <div v-bind:id="testId">
     <img v-bind:src="img">
     </div>
   </div>
+    <div id="app2">
+    <div :id="MenuContaineId">
+    <img :src="img">
+    </div>
+  </div>
   <script>
-    var app = new Vue({         
-      el: '#app',               
+    var foo = new Vue({         
+      el: '#app1',               
+      data: {         
+        testId: 'sitemenu',
+        img:"http://cn.vuejs.org/images/logo.png"
+      }
+    });
+     var bar = new Vue({         
+      el: '#app2',               
       data: {         
         MenuContaineId: 'sitemenu',
         img:"http://cn.vuejs.org/images/logo.png"

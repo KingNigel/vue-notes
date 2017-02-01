@@ -47,19 +47,10 @@ Vue 生态系统支持的库开发的复杂单页应用。
 ![vue 双向绑定](pic/02vue双向绑定.jpg)
 
 ## Vue绑定文本
-数据绑定最常见的形式就是使用 “Mustache” 语法（双大括号）的文本插值，比如模板引擎：handlebars中就是用的`{{}}`.   
-创建的Vue对象中的data属性就是用来绑定数据到HTML的。参考如下代码：
-```html
-<span>Message: {{ msg }}</span>
-<script>
-  var app = new Vue({         // 创建Vue对象。Vue的核心对象。
-    el: '#app',               // el属性：把当前Vue对象挂载到 div标签上，#app是id选择器
-    data: {                   // data: 是Vue对象中绑定的数据
-      msg: 'Hello Vue!'   // message 自定义的数据
-    }
-  });
-</script>
-```
+数据绑定最常见的形式就是使用 “Mustache” 语法（双大括号）的文本插值  
+创建的Vue对象中的data属性就是用来绑定数据到HTML的。
+例如 上面一个例子helloworld `{{}}`
+
 ## 绑定数据中使用JavaScript表达式
 对于所有的数据绑定， Vue.js 都提供了完全的 JavaScript 表达式支持。
 ```html
@@ -93,38 +84,24 @@ Vue中不能直接使用`{{ expression }}` 语法进行绑定html的标签，而
 ```
 <标签 v-bind:属性名="要绑定的Vue对象的data里的属性名"></标签>
 例如:
-<span v-bind:id="menuId">{{ menuName }}</span>
+<div v-bind:id="menuId"></div>
 ```
 参考如下代码案例：
 ```html
-<!DOCTYPE html> 
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Vue入门之数据绑定--属性绑定</title>
-  <script src="https://unpkg.com/vue/dist/vue.js"></script>
-</head>
-<body>
   <div id="app">
-    <div v-bind:id="MenuContaineId">
-      <a href="#" v-bind:class="MenuClass">首页</a>
-      <a href="#" v-bind:class="MenuClass">产品</a>
-      <a href="#" v-bind:class="MenuClass">服务</a>
-      <a href="#" v-bind:class="MenuClass">关于</a>
+    <div v-bind:id="foo">
+     <img v-bind:src="img">
     </div>
   </div>
-
   <script>
     var app = new Vue({         
       el: '#app',               
-      data: {                   // data: 是Vue对象中绑定的数据
-        MenuClass: 'top-menu',
-        MenuContaineId: 'sitemenu'
+      data: {                   
+        img:"http://cn.vuejs.org/images/logo.png",
+        foo: 'barId'
       }
     });
   </script>
-</body>
-</html>
 ```
 
 ## 属性绑定简写
@@ -136,35 +113,87 @@ Vue中不能直接使用`{{ expression }}` 语法进行绑定html的标签，而
 <div v-bind:id="MenuContaineId">
 ```
 
-## 输出纯HTML
-由于Vue对于输出绑定的内容做了提前encode，保障在绑定到页面上显示的时候不至于被xss攻击。但某些场景下，我们确保后台数据是安全的，那么我们就要在网页中显示原生的HTML标签。Vue提供了`v-html`指令。
-```html
-<div id="app">
-  <div v-bind:id="MenuContaineId" v-html="MenuBody">
-  </div>
-</div>
-<script>
-  var app = new Vue({         
-    el: '#app',               
-    data: {                   // data: 是Vue对象中绑定的数据
-      MenuContaineId: 'menu',
-      MenuBody: '<p>这里是菜单的内容</p>'
-    }
-  });
-</script>
-```
-结果：
-```html
-<div id="app">
-  <div id="menu">
-    <p>这里是菜单的内容</p>
-  </div>
-</div>
-```
+
 
 ## 样式绑定
 对于普通的属性的绑定，只能用上面的讲的绑定属性的方式。而Vue专门加强了class和style的属性的绑定。可以有复杂的对象绑定、数组绑定样式和类。
+普通样式绑定，就当是字符串去绑定。
+```html
+ <div id="app">
+    <div :style="testCss">
+       囧囧
+    </div>
+  </div>
+  <script>
+    var foo = new Vue({         
+      el: '#app',               
+      data: {         
+        testCss:'color: red; margin-left: 20px;background-color: #ccc;'
+      }
+    });
+   </script>
+```   
 
+###style 绑定内联样式
+内联样式的绑定，非常类似于样式类的操作。
+v-bind:style 的对象语法十分直观——看着非常像 CSS ，
+其实它是一个 JavaScript 对象。
+ CSS属性名可以用驼峰式（camelCase）或短横分隔命名（kebab-case）。
+
+1.一个对象传递写法
+```html
+ <div id="app1">
+    <div :style="test">
+       囧囧1
+    </div>
+  </div>
+ <script>
+    var foo = new Vue({         
+      el: '#app1',               
+      data: {  
+         test:{ 
+          'color': 'red',
+          'margin-left':'20px',
+          'background-color': '#ccc'
+         }
+      }
+    });
+  </script>
+```
+2.对象的属性传递写法
+```html
+  <div id="app2">
+    <div :style="{color:color,'margin-left':left}">
+       囧囧2
+    </div>
+  </div>
+  <script>
+    var bar = new Vue({         
+      el: '#app2',               
+      data: {    
+          'color': 'red',
+          left:'20px'
+       }
+    });
+  </script>
+```
+3.数组的方式传递多个样式对象
+```html
+  <div id="app3">
+    <div :style="[a,b]">
+       囧囧3
+    </div>
+  </div>
+  <script>
+   var baz = new Vue({         
+      el: '#app3',               
+      data: {    
+          a:{'color': 'red'},
+          b:{'margin-left':'20px'}
+       }
+    });
+  </script>
+```
 ### 绑定样式对象
 经常我们需要对样式进行切换，比如：div的显示和隐藏，某些标签active等。Vue提供的对象绑定样式的方式就很容做这些事情。
 ```html
@@ -175,35 +204,24 @@ Vue中不能直接使用`{{ expression }}` 语法进行绑定html的标签，而
 ```
 
 ```html
-<!DOCTYPE html> 
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Vue入门之绑定样式类</title>
-  <script src="https://unpkg.com/vue/dist/vue.js"></script>
   <style>
   .active {
     background-color: #ccc;
   }
   </style>
-</head>
-<body>
   <div id="app">
-    <div v-bind:id="MenuContaineId" v-bind:class="{ active: isActive }">
+    <div  v-bind:class="{ active: isActive }">
       绑定颜色类
     </div>
   </div>
   <script>
     var app = new Vue({         
       el: '#app',               
-      data: {                   // data: 是Vue对象中绑定的数据
-        MenuContaineId: 'menu',
+      data: {     
         isActive: true
       }
     });
   </script>
-</body>
-</html>
 ```
 
 ### 混合普通的HTML标签样式类及绑定样式对象
@@ -212,7 +230,7 @@ v-bind:class 指令可以与普通的 class 属性共存。
 ```html
 <div id="app">
   <div class="static"
-     v-bind:class="{ active: isActive, 'text-danger': hasError }">
+     v-bind:class="{ active: isActive, 'important': hasError }">
   </div>
 </div>
 <script>
@@ -282,42 +300,33 @@ data: {
 <div v-bind:class="[{ active: isActive }, errorClass]">
 ```
 
-### 内联样式绑定
-内联样式的绑定，非常类似于样式类的操作。v-bind:style 的对象语法十分直观——看着非常像 CSS ，其实它是一个 JavaScript 对象。 CSS属性名可以用驼峰式（camelCase）或短横分隔命名（kebab-case）。
 
-看个例子：
+
+## 输出纯HTML
+由于Vue对于输出绑定的内容做了提前encode，保障在绑定到页面上显示的时候不至于被xss攻击。但某些场景下，我们确保后台数据是安全的，那么我们就要在网页中显示原生的HTML标签。Vue提供了`v-html`指令。
 ```html
-<!DOCTYPE html> 
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Vue入门之htmlraw</title>
-  <script src="https://unpkg.com/vue/dist/vue.js"></script>
-</head>
-<body>
-  <div id="app">
-    <div v-bind:style="{fontSize: size + 'px', backgroundColor: bgcolor, width: width}">
-      vue 入门系列教程
-    </div>
+<div id="app">
+  <div v-bind:id="MenuContaineId" v-html="MenuBody">
   </div>
-  <script>
-    var app = new Vue({         
-      el: '#app',               
-      data: {                   
-        size: 19,
-        width: 200,
-        bgcolor: 'red'
-      }
-    });
-  </script>
-</body>
-</html>
-
+</div>
+<script>
+  var app = new Vue({         
+    el: '#app',               
+    data: {                   // data: 是Vue对象中绑定的数据
+      MenuContaineId: 'menu',
+      MenuBody: '<p>这里是菜单的内容</p>'
+    }
+  });
+</script>
 ```
-
-自动添加前缀   
-当 v-bind:style 使用需要特定前缀的 CSS 属性时，如 transform ，Vue.js 会自动侦测并添加相应的前缀。
-
+结果：
+```html
+<div id="app">
+  <div id="menu">
+    <p>这里是菜单的内容</p>
+  </div>
+</div>
+```
 ## 计算属性
 在做数据的绑定的时候,数据要进行处理之后才能展示到html页面上，虽然vue提供了非常好的表达式绑定的方法，但是只能应对低强度的需求。比如： 把一个日期按照规定格式进行输出，可能就需要我们对日期对象做一些格式化的出来，表达式可能就捉襟见肘了。
 

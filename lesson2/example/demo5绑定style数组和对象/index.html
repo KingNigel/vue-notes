@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+</head>
+ <body>
+  <div id="app1">
+    <div :style="test">
+       囧囧1
+    </div>
+  </div>
+   
+  <script>
+    var foo = new Vue({         
+      el: '#app1',               
+      data: {  
+         test:{ 
+          'color': 'red',
+          marginLeft:'20px',
+          'background-color': '#ccc'
+         }
+      }
+    });
+    var bar = new Vue({         
+      el: '#app2',               
+      data: {    
+          'color': 'red',
+          left:20
+       }
+    });
+      var baz = new Vue({         
+      el: '#app3',               
+      data: {    
+          a:{'color': 'red'},
+          b:{'margin-left':20+'px'}
+       }
+    });
+   </script>
+</body>
+</html>

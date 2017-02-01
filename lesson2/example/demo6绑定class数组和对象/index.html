@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+  <style>
+  .test{
+    color:blue;
+  }
+  .test2{
+    background-color:aquamarine;
+  }
+  </style>
+</head>
+<body>
+  <div id="app1">
+    <div :class="{test:isOk}">
+       囧囧1
+    </div>
+  </div>
+   <div id="app2">
+    <div :class="{test:isOk,'important': isError }">
+       囧囧2
+    </div>
+  </div>
+   <div id="app3">
+    <div :class="[a,b]">
+       囧囧3
+    </div>
+  </div>
+  <script>
+    var foo = new Vue({         
+      el: '#app1',               
+      data: {  
+         isOk:true
+      }
+    });
+    var bar = new Vue({         
+      el: '#app2',               
+      data: {    
+          isOk:true,
+          isError:true
+       }
+    });
+      var baz = new Vue({         
+      el: '#app3',               
+      data: {    
+          a:'test1',
+          b:'test2'
+       }
+    });
+   </script>
+</body>
+</html>
