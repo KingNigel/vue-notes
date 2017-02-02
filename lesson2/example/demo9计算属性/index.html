@@ -1,0 +1,29 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue入门之htmlraw</title>
+  <script src="./vue.js"></script>
+</head>
+<body>
+ <div id="app">
+        <!-- computed里面的函数可以直接当成data里面的属性用，非常方便，注意没有括号！！！-->
+        <div>生日:{{ getBirthday }}</div>
+  </div>
+  <script>
+    var app = new Vue({         
+      el: '#app',               
+      data: {                   
+        birthday: 914228510514,     // 这是一个日期对象的值：1998年11月1日
+      },
+      computed: {
+        // 把日期换成 常见规格格式的字符串。
+        getBirthday: function () {
+          var m = new Date(this.birthday);
+          return m.getFullYear() + '年' + m.getMonth() +'月'+ m.getDay()+'日';
+        }
+      }
+    });
+  </script>
+</body>
+</html>

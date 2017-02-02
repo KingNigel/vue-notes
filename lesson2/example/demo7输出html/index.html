@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+</head>
+<body>
+  <div id="app" v-html="html">
+  </div>
+  <script>
+    var foo = new Vue({         
+      el: '#app',               
+      data: {  
+        html:'<p>我想静静</p>'
+      }
+    });
+   
+   </script>
+</body>
+</html>

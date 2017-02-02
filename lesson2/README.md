@@ -33,7 +33,7 @@ Vue 生态系统支持的库开发的复杂单页应用。
       }
     });
   </script>
-第四步：在浏览器的控制台修改app.message的值
+第四步：在浏览器的控制台修改app.message的值,核心
 ## Vue的Helloworld总结
 - Vue构造函数的：选项el属性，就是element缩写，当前Vue对象挂载到哪个标签上的语法，支持CSS选择器或者dom对象，一般用id选择器选择当前页面的标签。
 - Vue的选项：data属性是自定义数据。这里我们只是演示了一个message属性，vue会把自定义的数据可以与html的模板数据进行绑定。
@@ -202,7 +202,7 @@ v-bind:style 的对象语法十分直观——看着非常像 CSS ，
 解释：
 当 isActive为 true时， div就会具有了active样式类，如果 isActive为false，那么div就去掉active样式类。
 ```
-
+1.绑定外部样式表 并控制样式表的是否生效
 ```html
   <style>
   .active {
@@ -223,245 +223,76 @@ v-bind:style 的对象语法十分直观——看着非常像 CSS ，
     });
   </script>
 ```
-
-### 混合普通的HTML标签样式类及绑定样式对象
-
-v-bind:class 指令可以与普通的 class 属性共存。
+2.v-bind:class 指令可以与普通的 class 属性共存
 ```html
-<div id="app">
-  <div class="static"
-     v-bind:class="{ active: isActive, 'important': hasError }">
+  <style>
+  .test{
+    color:blue;
+  }
+  </style>
+   <div id="app2">
+    <div :class="{test:isOk,'important': isError}">
+       囧囧2
+    </div>
   </div>
-</div>
-<script>
-  var app = new Vue({         
-    el: '#app',               
-    data: {                   // data: 是Vue对象中绑定的数据
-      isActive: true,
-      hasError: false
-    }
-  });
-</script>
+  <script>
+      var bar = new Vue({         
+      el: '#app2',               
+      data: {    
+          isOk:true,
+          isError:true
+       }
+    });
+  </script>
 ```
-结果：
+3. ：class数组
 ```html
-<div id="app">
-  <div class="static active">
-  </div>  
-</div>
-```
-
-### 绑定data中的样式对象
-直接在html属性中的双引号内写对象，还是很不爽，也没有智能提示，很容易写错。
-Vue可以让我们直接把绑定的class字符串指向data的一个对象，这样就非常方便了，既可以有智能提示，又可以很复杂进行编辑，不用担心烦人的`""`了。
-
-```html
-<div id="app">
-  <div class="static"
-     v-bind:class="classObject">
+  <style>
+  .test{
+    color:blue;
+  }
+  .test2{
+    background-color:aquamarine;
+  }
+  </style>
+   <div id="app3">
+    <div :class="[a,b]">
+       囧囧3
+    </div>
   </div>
-</div>
-<script>
-  var app = new Vue({         
-    el: '#app',               
-    data: {
-      classObject: {
-        active: true,
-        'text-danger': false
-      }
-    }
-  });
-</script>
+  <script>
+     var baz = new Vue({         
+      el: '#app3',               
+      data: {    
+          a:'test1',
+          b:'test2'
+       }
+    });
+  </script>
 ```
-结果：
-```html
-<div id="app">
-  <div class="static active">
-  </div>
-</div>
-
-```
-
-### 绑定样式数组
-其实绑定数组，就是绑定样式对象的延续，看官网的例子代码吧。
-```html
-<div v-bind:class="[activeClass, errorClass]">
-
-data: {
-  activeClass: 'active',
-  errorClass: 'text-danger'
-}
-```
-
 当然还有很多其他很有趣的支持，就不赘述了。
 ```html
 例如:
 <div v-bind:class="[isActive ? activeClass : '', errorClass]">
 <div v-bind:class="[{ active: isActive }, errorClass]">
 ```
-
-
-
 ## 输出纯HTML
 由于Vue对于输出绑定的内容做了提前encode，保障在绑定到页面上显示的时候不至于被xss攻击。但某些场景下，我们确保后台数据是安全的，那么我们就要在网页中显示原生的HTML标签。Vue提供了`v-html`指令。
 ```html
 <div id="app">
-  <div v-bind:id="MenuContaineId" v-html="MenuBody">
+  <div  v-html="html">
   </div>
 </div>
 <script>
   var app = new Vue({         
     el: '#app',               
-    data: {                   // data: 是Vue对象中绑定的数据
-      MenuContaineId: 'menu',
-      MenuBody: '<p>这里是菜单的内容</p>'
+    data: {                   
+      html: '<p>内容</p>'
     }
   });
 </script>
 ```
-结果：
-```html
-<div id="app">
-  <div id="menu">
-    <p>这里是菜单的内容</p>
-  </div>
-</div>
-```
-## 计算属性
-在做数据的绑定的时候,数据要进行处理之后才能展示到html页面上，虽然vue提供了非常好的表达式绑定的方法，但是只能应对低强度的需求。比如： 把一个日期按照规定格式进行输出，可能就需要我们对日期对象做一些格式化的出来，表达式可能就捉襟见肘了。
 
-Vue对象提供的computed属性，可以让我们开发者在里面可以放置一些方法，协助我们绑定数据操作，这些方法可以跟data中的属性一样用，注意这些方法用的时候不要加`()`。
-例子来了：
-```html
-<!DOCTYPE html> 
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Vue入门之htmlraw</title>
-  <script src="https://unpkg.com/vue/dist/vue.js"></script>
-</head>
-<body>
-  <div id="app">
-    <table>
-      <tr>
-        <!-- computed里面的函数可以直接当成data里面的属性用，非常方便，注意没有括号！！！-->
-        <td>生日</td><td>{{ getBirthday }}</td>
-      </tr>
-      <tr>
-        <td>年龄</td><td>{{ age }}</td>
-      </tr>      
-      <tr>
-        <td>地址</td><td>{{ address }}</td>
-      </tr>
-    </table>
-  </div>
-  <script>
-    var app = new Vue({         
-      el: '#app',               
-      data: {                   
-        birthday: 914228510514,     // 这是一个日期对象的值：1998年11月1日
-        age: 19,
-        address: '北京昌平区龙泽飞龙'
-      },
-      computed: {
-        // 把日期换成 常见规格格式的字符串。
-        getBirthday: function () {
-          var m = new Date(this.birthday);
-          return m.getFullYear() + '年' + m.getMonth() +'月'+ m.getDay()+'日';
-        }
-      }
-    });
-  </script>
-</body>
-</html>
-```
-
-## 绑定的数据过滤器
-过滤器本质就是数据在呈现之前先进行过滤和筛选。官网上写的不错，我就不再赘述，下面是官网的描述。
-
-Vue.js 允许你自定义过滤器，被用作一些常见的文本格式化。过滤器应该被添加在 mustache 插值的尾部，由“管道符”指示：
-```
-{{ message | capitalize }}
-<!-- in mustaches -->
-{{ message | capitalize }}
-<!-- in v-bind -->
-<div v-bind:id="rawId | formatId"></div>
-Vue 2.x 中，过滤器只能在 mustache 绑定和 v-bind 表达式（从 2.1.0 开始支持）中使用，因为过滤器设计目的就是用于文本转换。为了在其他指令中实现更复杂的数据变换，你应该使用计算属性。
-
-过滤器函数总接受表达式的值作为第一个参数。
-new Vue({
-  // ...
-  filters: {
-    capitalize: function (value) {
-      if (!value) return ''
-      value = value.toString()
-      return value.charAt(0).toUpperCase() + value.slice(1)
-    }
-  }
-})
-过滤器可以串联：
-{{ message | filterA | filterB }}
-过滤器是 JavaScript 函数，因此可以接受参数：
-{{ message | filterA('arg1', arg2) }}
-这里，字符串 'arg1' 将传给过滤器作为第二个参数， arg2 表达式的值将被求值然后传给过滤器作为第三个参数。
-```
-
-## 核心：自动响应对象的变化到HTML标签
-上面的例子都是 数据对象是写死在创建的Vue对像上，那如果数据（data）发生改变时会怎样呢？
-让我们用chrome把上面例子的页面打开，并打开发者工具控制台,输入：`app.age = 20` 会有什么情况发生呢？
-
----
-![响应](imgs/03vue响应.png)
-
-在页面中添加一个按钮，动态的增加年龄：
-
-```html
-<!DOCTYPE html> 
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Vue入门之htmlraw</title>
-  <script src="https://unpkg.com/vue/dist/vue.js"></script>
-</head>
-<body>
-  <div id="app">
-    <table>
-      <tr>
-        <!-- computed里面的函数可以直接当成data里面的属性用，非常方便，注意没有括号！！！-->
-        <td>生日</td><td>{{ getBirthday }}</td>
-      </tr>
-      <tr>
-        <td>年龄</td><td>{{ age }}</td>
-      </tr>      
-      <tr>
-        <td>地址</td><td>{{ address }}</td>
-      </tr>
-    </table>
-  </div>
-
-  <!-- 添加下面这行代码，动态增加 年龄，页面会有怎样的变化呢？？ -->
-  <button type="button" onclick="app.age+=1;" >加加</button>
-  <script>
-    var app = new Vue({         
-      el: '#app',               
-      data: {                   
-        birthday: 914228510514,     // 这是一个日期对象的值：1998年11月1日
-        age: 19,
-        address: '北京昌平区龙泽飞龙'
-      },
-      computed: {
-        // 把日期换成 常见规格格式的字符串。
-        getBirthday: function () {
-          var m = new Date(this.birthday);
-          return m.getFullYear() + '年' + m.getMonth() +'月'+ m.getDay()+'日';
-        }
-      }
-    });
-  </script>
-</body>
-</html>
-
-```
 
 ## 双向数据绑定
 
@@ -470,14 +301,6 @@ HTML中只有表达能接受用户的输入，最简单的演示双向绑定的�
 
 Vue提供了一个新的指令：v-model进行双向数据的绑定，注意不是v-bind。
 ```html
-<!DOCTYPE html> 
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Vue入门之htmlraw</title>
-  <script src="https://unpkg.com/vue/dist/vue.js"></script>
-</head>
-<body>
   <div id="app">
     <!-- v-model可以直接指向data中的属性，双向绑定就建立了 -->
     <input type="text" name="txt" v-model="msg">
@@ -491,14 +314,51 @@ Vue提供了一个新的指令：v-model进行双向数据的绑定，注意不�
       }
     });
   </script>
-</body>
-</html>
 ```
+修饰符
+.lazy 把监听keyup事件变成change事件，写法是在指令名字后面加.lazy
+<input v-model.lazy="msg" >
+.trim 自动过滤用户输入的首尾空格
+<input v-model.trim="msg">
+注意点：修饰符支持链式  v-model.trim.lazy
+## 计算属性
+在做数据的绑定的时候,数据要进行处理之后才能展示到html页面上，虽然vue提供了非常好的表达式绑定的方法，但是只能应对低强度的需求。比如： 把一个日期按照规定格式进行输出，可能就需要我们对日期对象做一些格式化的出来，表达式可能就捉襟见肘了。
 
-最终的结果就是：你改变input文本框的内容的时候，p标签中的内容会跟着进行改变，哇是不是很神奇呢...
-
-关于其他表单的绑定的语法我就不赘述了，还是参考官网吧，我这里大部分例子也是来自[官网](https://cn.vuejs.org/v2/guide/forms.html#基础用法)。
-
+Vue对象提供的computed属性，可以让我们开发者在里面可以放置一些方法，协助我们绑定数据操作，这些方法可以跟data中的属性一样用，注意这些方法用的时候不要加`()`。
+例子来了：
+```html
+  <div id="app">
+        <!-- computed里面的函数可以直接当成data里面的属性用，非常方便，注意没有括号！！！-->
+        <div>生日:{{ getBirthday }}</div>
+  </div>
+  <script>
+    var app = new Vue({         
+      el: '#app',               
+      data: {                   
+        birthday: 914228510514,     // 这是一个日期对象的值：1998年11月1日
+      },
+      computed: {
+        // 把日期换成 常见规格格式的字符串。
+        getBirthday: function () {
+          var m = new Date(this.birthday);
+          return m.getFullYear() + '年' + m.getMonth() +'月'+ m.getDay()+'日';
+        }
+      }
+    });
+  </script>
+```
+注意点：这里getBirthday的值是跟着birthday变化的，也就是修改app.birthday会改变页面上getBirthday的值
+，如果getBirthday多次被访问，则是从缓存中获取的值，也就是说app.birthday值不变，getBirthday只会被计算一次。
+如果需要每次都被重新计算，例如，实时获取当前的时间，写法如下
+```
+methods:  
+  now: function () {
+    return Date.now();
+  }
+  }
+}
+```
+使用methods属性替代computed即可。
 ## 数据绑定总结
 
-vue提供了大量的绑定的语法和方法，非常方便我们进行数据的绑定，尤其它是双向的数据绑定，极大的减少了我们dom操作的麻烦程度。可能你越来越喜欢它了吧...
+vue提供了大量的绑定的语法和方法，非常方便我们进行数据的绑定，尤其它是双向的数据绑定，极大的减少了我们dom操作的麻烦程度。

@@ -1,0 +1,23 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue入门之htmlraw</title>
+  <script src="./vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <!-- v-model可以直接指向data中的属性，双向绑定就建立了 -->
+    <input type="text" name="txt" v-model.trim.lazy="msg" >
+    <p>您输入的信息是：{{ msg }}</p>
+  </div>
+  <script>
+    var app = new Vue({         
+      el: '#app',               
+      data: {                   
+        msg: '双向数据绑定的例子'
+      }
+    });
+  </script>
+</body>
+</html>
